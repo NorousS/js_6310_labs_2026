@@ -394,40 +394,12 @@ function taskClasses() {
             return this.batteryCapacity * 6;
         }
     }
-    // ПРОВЕРКА
-    const vehicle = new Vehicle("Toyota", "Corolla", 2015);
-    vehicle.displayInfo();
-    console.log("Возраст:", vehicle.age);
-
-    vehicle.year = 2050; // ошибка — год больше текущего
-    vehicle.year = 2018;
-    console.log("Новый год:", vehicle.year);
-
-    const car = new Car("BMW", "X5", 2020, 4);
-    car.displayInfo();
-    car.honk();
-
-    const electricCar = new ElectricCar("Tesla", "Model S", 2022, 4, 100);
-    electricCar.displayInfo();
-    console.log("Запас хода:", electricCar.calculateRange(), "км");
-
-    console.log("Разница в возрасте:", Vehicle.compareAge(vehicle, car));
-    console.log("Всего транспортных средств:", Vehicle.getTotalVehicles());
 
     // ===== ЗАДАНИЕ 7: Каррирование =====
     // Создайте функцию createVehicleFactory, которая возвращает функцию
     // для создания транспортных средств определенного типа (каррирование).
-    const createVehicleFactory = (vehicleType) => (make, model, year) => {
-        switch (vehicleType) {
-            case "Vehicle":
-                return new Vehicle(make, model, year);
-            case "Car":
-                return new Car(make, model, year, 4);
-            case "ElectricCar":
-                return new ElectricCar(make, model, year, 4, 100);
-            default:
-                return null;
-        }
+    const createVehicleFactory = (VehicleClass) => (...args) => {
+        return new VehicleClass(...args);
     };
 
     return { Vehicle, Car, ElectricCar, createVehicleFactory };
@@ -459,7 +431,7 @@ Learn Regex - https://github.com/ziishaned/learn-regex - учебник по reg
  * - +7(999)123-45-67
  */
 function validatePhone(phone) {
-    const phoneRegex = /^(\+7|8)[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
+    const phoneRegex = /^(?:\+7|8)(?:[\s-]?\(\d{3}\)|[\s-]?\d{3})[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
     return phoneRegex.test(phone);
 }
 
@@ -580,17 +552,16 @@ function runTests() {
     console.assert(Vehicle.getTotalVehicles() > 0, "Тест Vehicle.getTotalVehicles (больше нуля) провален");
 
     // Тест 20: createVehicleFactory (каррирование)
-    const createCarFactory = createVehicleFactory("Car");
-    const myNewCar = createCarFactory('BMW', 'X5', 2022);
+    const createCarFactory = createVehicleFactory(Car);
+    const myNewCar = createCarFactory('BMW', 'X5', 2022, 4);
     console.log('Создан новый автомобиль:');
     myNewCar.displayInfo();
     console.assert(myNewCar instanceof Car, "Тест createVehicleFactory (Car) провален");
     console.assert(myNewCar.make === 'BMW', "Тест createVehicleFactory (make) провален");
 
-    const createECarFactory = createVehicleFactory("ElectricCar");
-    const myNewECar = createECarFactory('Nissan', 'Leaf', 2023);
+    const createECarFactory = createVehicleFactory(ElectricCar);
+    const myNewECar = createECarFactory('Nissan', 'Leaf', 2023, 4, 100);
     console.assert(myNewECar instanceof ElectricCar, "Тест createVehicleFactory (ElectricCar) провален");
-    console.assert(createVehicleFactory("Unknown")('X', 'Y', 2020) === null, "Тест createVehicleFactory (неизвестный тип) провален");
 
     console.log('Всего создано транспортных средств:', Vehicle.getTotalVehicles());
 
