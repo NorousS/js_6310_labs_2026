@@ -4,7 +4,6 @@ function addBoJackStyle() {
 
     const styleKey = 'bojack-style-enabled';
 
-    // Функция для изменения стиля страницы
     function toggleBoJackStyle() {
 
         const pageWrapper = document.getElementById('page_wrapper');
@@ -17,7 +16,6 @@ function addBoJackStyle() {
 
             if (currentStatus === 'true') {
 
-                // Выключаем стиль
                 pageWrapper.classList.remove('bojack-mode');
 
                 localStorage.setItem(styleKey, 'false');
@@ -26,7 +24,6 @@ function addBoJackStyle() {
 
             } else {
 
-                // Включаем стиль
                 pageWrapper.classList.add('bojack-mode');
 
                 localStorage.setItem(styleKey, 'true');
@@ -42,7 +39,6 @@ function addBoJackStyle() {
     }
 
 
-    // Создаем стили
     function createStyles() {
 
         if (document.getElementById('bojack-style')) {
@@ -186,7 +182,6 @@ function addBoJackStyle() {
     }
 
 
-    // Обновляем надпись на кнопке
     function updateButton() {
 
         const button = document.getElementById('bojack-style-toggle-btn');
@@ -205,10 +200,8 @@ function addBoJackStyle() {
     }
 
 
-    // Создаем кнопку
     function createToggleButton() {
 
-        // Проверяем, не создана ли кнопка
         if (document.getElementById('bojack-style-toggle-btn')) {
             console.log('Кнопка уже добавлена');
             return;
@@ -221,7 +214,6 @@ function addBoJackStyle() {
             return;
         }
 
-        // Используем children
         console.log(
             'Количество элементов в контейнере:',
             buttonContainer.children.length
@@ -233,10 +225,8 @@ function addBoJackStyle() {
         button.textContent = '🌅 BoJack: ВЫКЛ';
         button.title = 'Включить стиль';
 
-        // Добавляем кнопку
         buttonContainer.appendChild(button);
 
-        // Используем parentElement
         console.log(
             'Родитель кнопки:',
             button.parentElement.className
@@ -258,10 +248,8 @@ function addBoJackStyle() {
     }
 
 
-    // Дополнительная работа с элементами страницы
     function checkPageElements() {
 
-        // Используем querySelectorAll
         const links = document.querySelectorAll('#page_wrapper .box_links > .box_link');
 
         console.log(
@@ -278,8 +266,6 @@ function addBoJackStyle() {
         });
     }
 
-
-    // Загружаем сохраненный стиль
     function loadSavedStyle() {
 
         const pageWrapper = document.getElementById('page_wrapper');
@@ -297,7 +283,6 @@ function addBoJackStyle() {
     }
 
 
-    // Запускаем создание
     function init() {
 
         createStyles();
