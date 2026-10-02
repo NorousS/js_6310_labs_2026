@@ -8,7 +8,7 @@ function simpleTask() {
     const number = 42;
     const string = "JavaScript";
     const boolean = true;
-    const object = { name: "Анна" };
+    const object = {name: "Анна"};
     const array = [1, 2, 3];
     const nothing = null;
     const undefinedValue = undefined;
@@ -25,34 +25,36 @@ function simpleTask() {
 // ===== ЗАДАНИЕ 2: Функции =====
 function getReviewerNumber(number, lab) {
     // 2.1 Функция определяющая номер ревьюера для вашей группы по вашему номеру и номеру лабораторной работы
-    const totalStudents = 30;
-    return (number + lab) % totalStudents;
+    let groupSize = 30;
+
+    let otvet= (lab + number) % groupSize;
+
+    if (otvet == 0) {
+        return groupSize;
+    } else {
+        return otvet;
+    }
 }
 
 function getVariant(number, variants) {
     // 2.2 Функция определяющая номер варианта, исходя из количества вариантов
-    let vr = number % variants;
-    if (vr === 0) {
-        vr = variants;
-    }
-    return vr;
+    return ((number - 1) % variants) + 1;
 }
 
 function calculate(a, b, operation) {
     // 2.3 Напишите функцию калькулятор, калькулятор обрабатывает следующие операции: +, -, *, /
-    if (operation === '+') {
-        return a + b;
-    } else if (operation === '-') {
-        return a - b;
-    } else if (operation === '*') {
-        return a * b;
-    } else if (operation === '/') {
-        if (b === 0) {
-            return "Деление на ноль";
-        }
-        return a / b;
-    } else {
-        return "Неизвестная операция";
+    switch(operation) {
+        case '+':
+            return a + b;
+        case '-':
+            return a - b;
+        case '*':
+            return a * b;
+        case '/':
+            if (b === 0) return "Деление на ноль";
+            return a / b;
+        default:
+            return "Неизвестная операция";
     }
 }
 
@@ -60,30 +62,40 @@ function calculateArea(figure, ...params) {
     // 2.4 Напишите функцию для определения площади фигур 'circle', 'rectangle', 'triangle'
     // Используйте switch.
     switch (figure) {
-        case 'circle': {
-            let radius = params[0];
-            if (radius <= 0) {
-                return "Радиус должен быть положительным";
+        case 'triangle':
+            if (params.length < 2) {
+                console.log("Ошибка: для треугольника нужно 2 числа!");
+                return "Ошибка";
             }
-            return Math.PI * radius * radius;
-        }
-        case 'rectangle': {
-            let width = params[0];
-            let height = params[1];
-            if (width <= 0 || height <= 0) {
-                return "Стороны должны быть положительными";
+            // Проверяем, что числа положительные
+            if (params[0] <= 0 || params[1] <= 0) {
+                console.log("Ошибка: стороны должны быть больше 0!");
+                return "Ошибка";
             }
-            return width * height;
-        }
-        case 'triangle': {
-            let base = params[0];
-            let height = params[1];
-            if (base <= 0 || height <= 0) {
-                return "Основание и высота должны быть положительными";
+            return 0.5 * (params[0]*params[1]);
+        case 'rectangle':
+            if (params.length < 2) {
+                console.log("Ошибка: для прямоугольника нужно 2 числа!");
+                return "Ошибка";
             }
-            return 0.5 * base * height;
-        }
+            if (params[0] <= 0 || params[1] <= 0) {
+                console.log("Ошибка: стороны должны быть больше 0!");
+                return "Ошибка";
+            }
+            return params[0]*params[1];
+        case 'circle':
+            if (params.length < 1) {
+                console.log("Ошибка: для круга нужно ввести радиус!");
+                return "Ошибка";
+            }
+            if (params[0] <= 0) {
+                console.log("Ошибка: радиус должен быть больше 0!");
+                return "Ошибка";
+            }
+            return Math.PI * params[0]*params[0];
+
         default:
+            console.log("Ошибка: неизвестная фигура!");
             return "Неизвестная фигура";
     }
 }
@@ -91,18 +103,21 @@ function calculateArea(figure, ...params) {
 // 2.5 Стрелочные функции
 const reverseString = (str) => {
     // Функция возвращает перевернутую строку
-    let result = '';
+    let revStr = "";
     for (let i = str.length - 1; i >= 0; i--) {
-        result += str[i];
+        revStr = revStr + str[i];
     }
-    return result;
+    return revStr;
 };
 
 const getRandomNumber = (min, max) => {
-    // Функция возвращает случайное число между min и max
-    let random = Math.random();
-    let res = Math.floor(random * (max - min + 1)) + min;
-    return res;
+    let sluchaynoe = Math.random();
+
+    let raznica = max - min;
+
+    let itog = Math.floor(sluchaynoe * raznica) + min;
+
+    return itog;
 };
 
 // ===== ЗАДАНИЕ 3: Объекты =====
@@ -112,23 +127,17 @@ const book = {
     // объект должен иметь два метода getInfo возвращает одной строкой информацию о названии книги, авторе, годе выпуска, количестве страниц
     // метод toggleAvailability - который меняет значение доступности и возвращает его
     title: "Мастер и Маргарита",
-    author: "Михаил Булгаков",
+    author: "М.А. Булгаков",
     year: 1967,
     pages: 480,
     isAvailable: true,
 
-    getInfo: function() {
-        let info = "Книга: " + this.title + ", автор: " + this.author +
-            ", год: " + this.year + ", страниц: " + this.pages;
-        return info;
+    getInfo() {
+        return `Название: "${this.title}", Автор: ${this.author}, Год: ${this.year}, Страниц: ${this.pages}`;
     },
 
-    toggleAvailability: function() {
-        if (this.isAvailable === true) {
-            this.isAvailable = false;
-        } else {
-            this.isAvailable = true;
-        }
+    toggleAvailability() {
+        this.isAvailable = !this.isAvailable;
         return this.isAvailable;
     }
 };
@@ -147,20 +156,16 @@ const student = {
     // Метод для расчета среднего балла
     getAverageGrade() {
         let sum = 0;
-        let count = 0;
-        for (let subject in this.grades) {
-            sum = sum + this.grades[subject];
-            count = count + 1;
+        let gradesArray = Object.values(this.grades);
+        for (let i = 0; i < gradesArray.length; i++) {
+            sum += gradesArray[i];
         }
-        if (count === 0) {
-            return 0;
-        }
-        return sum / count;
+        return sum / gradesArray.length;
     },
 
     // Метод для добавления новой оценки
     addGrade(subject, grade) {
-        if (subject === "" || typeof subject !== "string") {
+        if (!subject || subject.trim() === "") {
             return "Пустое название";
         }
         if (typeof grade !== "number" || grade < 0 || grade > 100) {
@@ -185,46 +190,45 @@ function processArrays() {
 
     // 1. Используйте forEach для вывода всех чисел больше 50
     console.log("Числа больше 50:");
-    numbers.forEach((num) => {
+    numbers.forEach(num => {
         if (num > 50) {
             console.log(num);
         }
     });
 
     // 2. Используйте map для создания массива квадратов чисел
-    const squares = numbers.map((num) => num * num);
+    /*const squares =  ваш код */
+    const squares = numbers.map(num => num ** 2);
 
     // 3. Используйте filter для получения активных пользователей
-    const activeUsers = users.filter((user) => user.isActive);
+    /*const activeUsers =  ваш код */
+    const activeUsers = users.filter(user => user.isActive);
 
     // 4. Используйте find для поиска пользователя с именем "Виктория"
-    const victoria = users.find((user) => user.name === "Виктория");
+    /*const victoria =  ваш код */
+    const victoria = users.find(user => user.name === "Виктория");
 
     // 5. Используйте reduce для подсчета суммы всех чисел
+    /*const sum =  ваш код */
     const sum = numbers.reduce((acc, num) => acc + num, 0);
 
     // 6. Используйте sort для сортировки пользователей по возрасту (по убыванию)
-    const sortedByAge = users.slice().sort((a, b) => b.age - a.age);
+    /*const sortedByAge =  ваш код */
+    const sortedByAge = [...users].sort((a, b) => b.age - a.age);
 
     // 7. Используйте метод для проверки, все ли пользователи старше 18 лет
-    const allAdults = users.every((user) => user.age > 18);
+    /*const allAdults =  ваш код */
+    const allAdults = users.every(user => user.age > 18);
 
     // 8. Создайте цепочку методов:
     //    - отфильтровать активных пользователей
     //    - преобразовать в массив имен
     //    - отсортировать по алфавиту
+    /*const activeUserNames =  ваш код */
     const activeUserNames = users
-        .filter((user) => user.isActive)
-        .map((user) => user.name)
+        .filter(user => user.isActive)
+        .map(user => user.name)
         .sort((a, b) => a.localeCompare(b));
-
-    console.log("Квадраты чисел:", squares);
-    console.log("Активные пользователи:", activeUsers);
-    console.log("Виктория:", victoria);
-    console.log("Сумма чисел:", sum);
-    console.log("Пользователи по возрасту (убывание):", sortedByAge);
-    console.log("Все старше 18:", allAdults);
-    console.log("Имена активных пользователей:", activeUserNames);
 }
 
 // ===== ЗАДАНИЕ 5: Менеджер задач =====
