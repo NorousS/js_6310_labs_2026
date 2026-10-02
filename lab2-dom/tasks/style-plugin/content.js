@@ -8,7 +8,7 @@ function addDarkMode() {
         const newsBox = document.querySelector('.news_box');
         if (pageWrapper) {
             const currentBg = pageWrapper.style.backgroundColor;
-            
+
             if (currentBg === 'black' || currentBg === 'rgb(0, 0, 0)') {
                 // Возвращаем оригинальные стили
                 pageWrapper.style.backgroundColor = '';
@@ -29,7 +29,7 @@ function addDarkMode() {
             console.log('Элемент с id="page_wrapper" не найден');
         }
     }
-    
+
     // Создаем и добавляем кнопку в DOM
     function createToggleButton() {
         // Проверяем, не создана ли уже кнопка
@@ -48,7 +48,7 @@ function addDarkMode() {
         button.id = 'dark-mode-toggle-btn';
         button.textContent = '🌙';
         button.title = 'Переключить режим';
-        
+
         // Стили для кнопки
         Object.assign(button.style, {
             width: '30px',
@@ -63,25 +63,25 @@ function addDarkMode() {
             textAlign: 'center',
             float: 'left'
         });
-        
+
         // Эффекты при наведении
         button.addEventListener('mouseenter', () => {
             button.style.transform = 'scale(1.1)';
         });
-        
+
         button.addEventListener('mouseleave', () => {
             button.style.transform = 'scale(1)';
         });
-        
+
         // Обработчик клика
         button.addEventListener('click', toggleDarkMode);
-        
+
         // Добавляем кнопку на страницу
         buttonContainer.appendChild(button);
-        
+
         console.log('Кнопка переключения темного режима добавлена');
     }
-    
+
     // Запускаем создание кнопки
     if (document.readyState === 'loading') {
         console.log('Кнопка будет добавлена после загрузки');
